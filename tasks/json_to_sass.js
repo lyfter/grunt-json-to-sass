@@ -50,19 +50,21 @@ var parseJSON = function (path, src) {
     },
 
     createSassMap = function (name, obj) {
-        var map = '$' + name + ':',
+        var map = '$' + name + ': ',
             json = JSON.stringify(obj);
 
         map += json
-            .replace(/"([a-z0-9#]+)"/g, '$1')
-            .replace(/((?!#).{1}|^.{0}){/g, '$1(')
+            .replace(/([,])"/g, ',\n\t"')
+            .replace(/"([:])/g, '": ')
+            .replace(/"([a-zA-Z0-9-()#$,_/'. ]+)"/g, '$1')
+            .replace(/((?!#).{1}|^.{0}){/g, '$1(\n\t')
             .replace(/\[/g, '(')
-            .replace(/}(?=,|$|\n|})/g, ')')
+            .replace(/}(?=,|$|\n|})/g, '\n)')
             .replace(/\]/g, ')');
 
         map = fixColors(map);
         map = fixSassStrings(map);
-        map += ';';
+        map += ';\n';
 
         return map;
     },
