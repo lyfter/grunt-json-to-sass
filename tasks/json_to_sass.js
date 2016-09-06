@@ -68,7 +68,7 @@ var parseJSON = function (path, src) {
             map += json
                 .replace(/([,])"/g, ',\n\t"')
                 .replace(/"([:])/g, '": ')
-                .replace(/"([a-zA-Z0-9-()#$,_/'*-+. ]+)"/g, '$1')
+                .replace(/"([a-zA-Z0-9-()#$,_/'*-+.% ]+)"/g, '$1')
                 .replace(/((?!#).{1}|^.{0}){/g, '$1(\n\t')
                 .replace(/\[/g, '(')
                 .replace(/}(?=,|$|\n|})/g, '\n)')
