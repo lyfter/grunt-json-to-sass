@@ -50,21 +50,35 @@ var parseJSON = function (path, src) {
     },
 
     createSassMap = function (name, obj) {
-        var map = '$' + name + ': ',
-            json = JSON.stringify(obj);
 
-        map += json
-            .replace(/([,])"/g, ',\n\t"')
-            .replace(/"([:])/g, '": ')
-            .replace(/"([a-zA-Z0-9-()#$,_/'. ]+)"/g, '$1')
-            .replace(/((?!#).{1}|^.{0}){/g, '$1(\n\t')
-            .replace(/\[/g, '(')
-            .replace(/}(?=,|$|\n|})/g, '\n)')
-            .replace(/\]/g, ')');
+        // If import instead of sass var
+        if (name.indexOf('@import') != -1) {
 
-        map = fixColors(map);
-        map = fixSassStrings(map);
-        map += ';\n';
+            var map = name;
+            map += obj;
+            map += ';\n';
+
+            return map;
+
+        } else {
+
+            var map = '$' + name + ': ',
+                json = JSON.stringify(obj);
+
+            map += json
+                .replace(/([,])"/g, ',\n\t"')
+                .replace(/"([:])/g, '": ')
+                .replace(/"([a-zA-Z0-9-()#$,_/'. ]+)"/g, '$1')
+                .replace(/((?!#).{1}|^.{0}){/g, '$1(\n\t')
+                .replace(/\[/g, '(')
+                .replace(/}(?=,|$|\n|})/g, '\n)')
+                .replace(/\]/g, ')');
+
+            map = fixColors(map);
+            map = fixSassStrings(map);
+            map += ';\n';
+
+        }
 
         return map;
     },
