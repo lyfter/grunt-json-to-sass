@@ -43,7 +43,9 @@ var parseJSON = function (path, src) {
             maps = [];
 
         Object.keys(json).forEach(function (map) {
-            maps.push(createSassMap(map, json[map]));
+            if (map != 'mapStyle') {
+                maps.push(createSassMap(map, json[map]));
+            }
         });
 
         return maps.join('\n');
